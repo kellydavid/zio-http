@@ -1,6 +1,9 @@
 package zio.http.doc.openapi
 
+import OpenApi._
 import Components._
+import Info._
+import Server._
 
 // MAY be extended with Specification Extensions
 case class OpenApi(openapi: String = "3.0.2",
@@ -26,26 +29,26 @@ object OpenApi {
 case class Info(title: String,
                 description: Option[String],
                 termsOfService: Option[String],
-                contact: Option[Info.Contact],
-                license: Option[Info.License],
+                contact: Option[Contact],
+                license: Option[License],
                 version: String)
 
 object Info {
 
   // MAY be extended with Specification Extensions
   case class Contact(name: Option[String],
-                     url: Option[OpenApi.Url],
-                     email: Option[OpenApi.Email])
+                     url: Option[Url],
+                     email: Option[Email])
 
   // MAY be extended with Specification Extensions
-  case class License(name: String, url: Option[OpenApi.Url])
+  case class License(name: String, url: Option[Url])
 
 }
 
 // MAY be extended with Specification Extensions
-case class Server(url: OpenApi.Url,
+case class Server(url: Url,
                   description: Option[String],
-                  variables: Map[String, Server.ServerVariable])
+                  variables: Map[String, ServerVariable])
 
 object Server {
 
