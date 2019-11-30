@@ -1,5 +1,7 @@
 package zio.http.doc.openapi
 
+import Components._
+
 // MAY be extended with Specification Extensions
 case class OpenApi(openapi: String = "3.0.2",
                    info: Info,
@@ -11,7 +13,6 @@ case class OpenApi(openapi: String = "3.0.2",
                    externalDocs: Option[ExternalDocumentation])
 
 sealed trait Path
-sealed trait Components
 sealed trait SecurityRequirement
 sealed trait Tag
 sealed trait ExternalDocumentation
@@ -52,5 +53,32 @@ object Server {
   case class ServerVariable(enum: List[String],
                             default: String,
                             description: Option[String])
+
+}
+
+// MAY be extended with Specification Extensions
+case class Components(schemas: ComponentsMap[Schema],
+                      responses: ComponentsMap[Response],
+                      parameters: ComponentsMap[Parameter],
+                      examples: ComponentsMap[Example],
+                      requestBodies: ComponentsMap[RequestBody],
+                      headers: ComponentsMap[Header],
+                      securityScheme: ComponentsMap[SecurityScheme],
+                      links: ComponentsMap[Link],
+                      callbacks: ComponentsMap[Callback])
+
+object Components {
+  type ComponentsKey = String // MUST match the regular expression: ^[a-zA-Z0-9\.\-_]+$ .
+  type ComponentsMap[A] = Map[ComponentsKey, A]
+
+  sealed trait Schema
+  sealed trait Response
+  sealed trait Parameter
+  sealed trait Example
+  sealed trait RequestBody
+  sealed trait Header
+  sealed trait SecurityScheme
+  sealed trait Link
+  sealed trait Callback
 
 }
