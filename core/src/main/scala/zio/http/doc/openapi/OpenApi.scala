@@ -5,6 +5,7 @@ import Components._
 import Info._
 import Server._
 import Path._
+import Parameter._
 
 // MAY be extended with Specification Extensions
 case class OpenApi(openapi: String = "3.0.2",
@@ -18,7 +19,6 @@ case class OpenApi(openapi: String = "3.0.2",
 
 sealed trait SecurityRequirement
 sealed trait Tag
-sealed trait ExternalDocumentation
 
 object OpenApi {
   type Url = String
@@ -76,7 +76,6 @@ object Components {
 
   sealed trait Schema
   sealed trait Response
-  sealed trait Parameter
   sealed trait Example
   sealed trait RequestBody
   sealed trait Header
@@ -117,4 +116,24 @@ object Path {
                        security: SecurityRequirement,
                        servers: List[Server])
 
+}
+
+case class ExternalDocumentation(description: Option[String],
+                                 url: Url)
+
+case class Parameter(name: String,
+                     in: In,
+                     description: String,
+                     required: Boolean,
+                     deprecated: Boolean = false,
+                     allowEmptyValue: Boolean
+                    )
+
+object Parameter {
+
+  sealed trait In
+  case object InQuery extends In
+  case object InHeader extends In
+  case object InPath extends In
+  case object InCookie extends In
 }
