@@ -4,6 +4,7 @@ import OpenApi._
 import Components._
 import Info._
 import Server._
+import Path._
 
 // MAY be extended with Specification Extensions
 case class OpenApi(openapi: String = "3.0.2",
@@ -15,7 +16,6 @@ case class OpenApi(openapi: String = "3.0.2",
                    tags: List[Tag],
                    externalDocs: Option[ExternalDocumentation])
 
-sealed trait Path
 sealed trait SecurityRequirement
 sealed trait Tag
 sealed trait ExternalDocumentation
@@ -83,5 +83,38 @@ object Components {
   sealed trait SecurityScheme
   sealed trait Link
   sealed trait Callback
+
+}
+
+case class Path(name: String, item: PathItem)
+
+object Path {
+
+  case class PathItem(ref: String,
+                      summary: Option[String],
+                      description: Option[String],
+                      get: Option[Operation],
+                      put: Option[Operation],
+                      post: Option[Operation],
+                      delete: Option[Operation],
+                      options: Option[Operation],
+                      head: Option[Operation],
+                      patch: Option[Operation],
+                      trace: Option[Operation],
+                      servers: List[Server],
+                      parameters: List[Parameter])
+
+  type OperationId = String // The id MUST be unique among all operations described in the API
+  case class Operation(tags: List[String],
+                       summary: Option[String],
+                       description: Option[String],
+                       operationId: Option[OperationId],
+                       parameters: Set[Parameter], // OR Reference Object
+                       requestBody: Option[RequestBody], // OR Reference Object
+                       responses: List[Response],
+                       callbacks: Map[String, Callback], // OR Reference Object
+                       deprecated: Boolean = false,
+                       security: SecurityRequirement,
+                       servers: List[Server])
 
 }
